@@ -7,11 +7,18 @@ use function is_null;
 
 trait CustomFileTrait
 {
+	/**	@var	string|NULL		$pathSource */
 	protected $pathSource;
 
+	/**
+	 *	...
+	 *	@access		public
+	 *	@param		string		$fileName
+	 *	@return		string
+	 */
 	public function getCustomFile( string $fileName ): string
 	{
-		if( is_null( $pathSource ) )
+		if( is_null( $this->pathSource ) )
 			throw new RuntimeException( 'Path to source is not set' );
 		$fileLocal		= $this->pathSource.$fileName;
 		$fileIndexer	= __DIR__.'/'.$fileName;
@@ -25,6 +32,12 @@ trait CustomFileTrait
 		return $filePath;
 	}
 
+	/**
+	 *	Set path to module source.
+	 *	@access		public
+	 *	@param		string		$pathSource
+	 *	@return		self
+	 */
 	public function setSourcePath( string $pathSource ): self
 	{
 		$this->pathSource	= $pathSource;
