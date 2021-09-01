@@ -16,10 +16,8 @@ require_once __DIR__.'/src/HtmlRenderer.php';
 require_once __DIR__.'/src/JsonRenderer.php';
 require_once __DIR__.'/src/ModuleIndex.php';
 require_once __DIR__.'/src/IniReader.php';
-require_once __DIR__.'/src/CliApp.php';
-require_once __DIR__.'/src/WebApp.php';
-require_once __DIR__.'/src/App.php';
 require_once __DIR__.'/src/ModuleDescriptionRenderer.php';
+require_once __DIR__.'/src/App.php';
 
 $pathSource	= dirname( dirname( dirname( __DIR__ ) ) ).'/';
 
