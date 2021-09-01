@@ -48,6 +48,7 @@ class App
 				break;
 			case 'html':
 				$renderer	= new HtmlRenderer();
+				$renderer->setSourcePath( $this->pathSource );
 				$renderer->setSettings( $this->settings );
 				$renderer->setModules( $this->moduleIndex->index() );
 				FileWriter::save( $this->pathSource.'index.html', $renderer->render() );

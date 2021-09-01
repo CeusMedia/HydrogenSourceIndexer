@@ -12,11 +12,9 @@ class IniReader extends Dictionary
 
 	protected $fileName	= '.index.ini';
 
-	protected $pathSource;
-
 	public function __construct( string $pathSource )
 	{
-		$this->pathSource	= $pathSource;
+		$this->setSourcePath( $pathSource );
 		try{
 			$filePath	= $this->getCustomFile( $this->fileName );
 		}
