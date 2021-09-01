@@ -1,9 +1,10 @@
 <?php
-namespace CeusMedia\HydrogenModules\Index;
+namespace CeusMedia\HydrogenSourceIndexer;
+
+use CMF_Hydrogen_Environment_Resource_Module_Reader as HydrogenModuleReader;
+use FS_File_RecursiveNameFilter as RecursiveFileNameIndex;
 
 use Exception;
-use FS_File_RecursiveNameFilter as RecursiveFileNameIndex;
-use CMF_Hydrogen_Environment_Resource_Module_Reader as HydrogenModuleReader;
 use RangeException;
 
 class ModuleIndex
@@ -20,16 +21,24 @@ class ModuleIndex
 
 	protected $mode	= self::MODE_REDUCED;
 
+	protected $pathSource;
+
+	public function __construct( string $pathSource )
+	{
+		$this->pathSource	= $pathSource;
+	}
+
 	public function index( ?int $mode = NULL ): array
 	{
-		$mode ?? $this->mode;
+		$mode	= $mode ?? $this->mode;
 		$list	= array();
-		$index	= new RecursiveFileNameIndex( './', 'module.xml' );
+		$index	= new RecursiveFileNameIndex( $this->pathSource, 'module.xml' );
+		$regExp	= '@^'.preg_quote( $this->pathSource, '@' ).'@';
 		foreach( $index as $entry ){
-			$id		= preg_replace( '@^./@', '', $entry->getPath() );
-			if( !preg_match( '@^[A-Z]@', $id ) )
+			$modulePath = preg_replace( $regExp, '', $entry->getPath() );
+			$id			= str_replace( '/', '_', $modulePath );
+			if( !preg_match( '@^[A-Z]@', $modulePath ) )
 				continue;
-			$id		= str_replace( '/', '_', $id );
 			try{
 				$module	= HydrogenModuleReader::load( $entry->getPathname(), $id );
 				switch( $mode ){
@@ -41,7 +50,7 @@ class ModuleIndex
 						);
 						break;
 					case self::MODE_REDUCED:
-						$module->path	= preg_replace( '@^\./@', '', dirname( $module->file ) );
+						$module->path	= $modulePath;
 						unset( $module->config );
 						unset( $module->files );
 						unset( $module->hooks );

@@ -1,5 +1,5 @@
 <?php
-namespace CeusMedia\HydrogenModules\Index;
+namespace CeusMedia\HydrogenSourceIndexer;
 
 use UI_HTML_Tag as HtmlTag;
 use UI_HTML_Elements as HtmlElements;

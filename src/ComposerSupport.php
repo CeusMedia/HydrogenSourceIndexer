@@ -1,5 +1,5 @@
 <?php
-namespace CeusMedia\HydrogenModules\Index;
+namespace CeusMedia\HydrogenSourceIndexer;
 
 use Composer\InstalledVersions as Composer;
 

@@ -1,5 +1,5 @@
 <?php
-namespace CeusMedia\HydrogenModules\Index;
+namespace CeusMedia\HydrogenSourceIndexer;
 
 class JsonRenderer
 {

@@ -1,8 +1,9 @@
 <?php
-namespace CeusMedia\HydrogenModules\Index;
+namespace CeusMedia\HydrogenSourceIndexer;
 
 use ADT_List_Dictionary as Dictionary;
 use FS_File_INI_Reader as IniFileReader;
+
 use DomainException;
 
 class IniReader extends Dictionary
@@ -11,8 +12,11 @@ class IniReader extends Dictionary
 
 	protected $fileName	= '.index.ini';
 
-	public function __construct()
+	protected $pathSource;
+
+	public function __construct( string $pathSource )
 	{
+		$this->pathSource	= $pathSource;
 		try{
 			$filePath	= $this->getCustomFile( $this->fileName );
 		}

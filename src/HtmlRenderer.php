@@ -1,12 +1,13 @@
 <?php
-namespace CeusMedia\HydrogenModules\Index;
+namespace CeusMedia\HydrogenSourceIndexer;
 
-use DomainException;
-use RuntimeException;
 use FS_File_Reader as FileReader;
 use UI_HTML_Elements as HtmlElements;
 use UI_HTML_PageFrame as HtmlPage;
 use UI_HTML_Tag as HtmlTag;
+
+use DomainException;
+use RuntimeException;
 
 class HtmlRenderer
 {
@@ -67,24 +68,6 @@ class HtmlRenderer
 	}
 
 	protected function renderModules(): string
-	{
-		return $this->renderModulesStrategy2();
-	}
-
-	protected function renderModulesStrategy1(): string
-	{
-		$list		= array();
-		foreach( $this->modules as $moduleName => $moduleData ){
-			$label	= $moduleData->title." ".$moduleData->version;
-			if( !empty( $moduleData->description ) )
-				$label	= HtmlElements::Acronym( $label, htmlentities( $moduleData->description, ENT_QUOTES, 'UTF-8' ) );
-			$list[]	= HtmlElements::ListItem( $label );
-		}
-		$list		= HtmlElements::unorderedList( $list );
-		return $list;
-	}
-
-	protected function renderModulesStrategy2(): string
 	{
 		$descriptionRenderer	= new ModuleDescriptionRenderer();
 		$list	= [];
