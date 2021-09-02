@@ -2,9 +2,17 @@
 
 In short: A tool to create an JSON index file for a collection of modules, usable with the Hydrogen framework.
 
+[![Package version](http://img.shields.io/packagist/v/ceus-media/hydrogen-source-indexer.svg?style=flat-square)](https://packagist.org/packages/ceus-media/hydrogen-source-indexer)
+[![Monthly downloads](http://img.shields.io/packagist/dt/ceus-media/hydrogen-source-indexer.svg?style=flat-square)](https://packagist.org/packages/ceus-media/hydrogen-source-indexer)
+[![PHP version](http://img.shields.io/packagist/php-v/ceus-media/hydrogen-source-indexer.svg?style=flat-square)](https://packagist.org/packages/ceus-media/hydrogen-source-indexer)
+[![PHPStan level](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat-square)](https://packagist.org/packages/ceus-media/hydrogen-source-indexer)
+[![License](https://img.shields.io/packagist/l/ceus-media/hydrogen-source-indexer.svg?style=flat-square)](https://packagist.org/packages/ceus-media/hydrogen-source-indexer)
+[![Release date](https://img.shields.io/github/release-date/CeusMedia/HydrogenSourceIndexer.svg?style=flat-square)](https://github.com/CeusMedia/HydrogenSourceIndexer)
+[![Commit date](https://img.shields.io/github/last-commit/CeusMedia/HydrogenSourceIndexer.svg?style=flat-square)](https://github.com/CeusMedia/HydrogenSourceIndexer)
+
 ## Introduction
 
-In the world of Hydrogen Framework, there a modules which can be installed from one or many modules sources.
+In the world of [Hydrogen Framework](https://github.com/CeusMedia/HydrogenFramework), there are modules which can be installed from one or many module sources.
 A module source is a set of Hydrogen modules, produced, collected or maintained by a company or maybe you.
 
 Modules can be installed using the tool [Hymn](https://github.com/CeusMedia/Hymn).
@@ -12,15 +20,15 @@ To be abled to scan for existing modules, a project has a hymn configuration fil
 These sources need to be installed within the project using composer.
 
 Since some libraries are collections with a higher number of modules, the indexing process can be made faster if the source has an index.
-This tool can create such an index, by collecting all necessary information into a JSON file.
+This tool can create such an index by collecting all necessary information into a JSON file.
 
 ## Usage
 
 Let's say you have:
 
-- a project using the Hydrogen Framework
+- a project using the [Hydrogen Framework](https://github.com/CeusMedia/HydrogenFramework)
 - used composer to install the framework
-- used composer to install the default module source [Hydrogen Modules](https://github.com/CeusMedia/HydrogenModules) *(optiona)*
+- used composer to install the default module source [Hydrogen Modules](https://github.com/CeusMedia/HydrogenModules) *(optional)*
 - have developed own modules, which shall be reusable
 - decided to create an own module source
 - have collected your set of modules in a VCS repository (GitHub, GitLab etc.)
