@@ -1,6 +1,18 @@
 <?php
+/**
+ *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
+ *	@copyright	2021 Ceus Media
+ */
 namespace CeusMedia\HydrogenSourceIndexer;
 
+use RuntimeException;
+use function date;
+use function json_encode;
+
+/**
+ *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
+ *	@copyright	2021 Ceus Media
+ */
 class JsonRenderer
 {
 	/**	@var	array		$modules */
@@ -12,6 +24,11 @@ class JsonRenderer
 	/**	@var	boolean		$printPretty */
 	protected $printPretty	= FALSE;
 
+	/**
+	 *	@access		public
+	 *	@return		string
+	 *	@throws		RuntimeException		if not settings are set
+	 */
 	public function render(): string
 	{
 		if( $this->settings === NULL )
@@ -29,21 +46,36 @@ class JsonRenderer
 		$options	= 0;
 		if( $this->printPretty )
 			$options	|= JSON_PRETTY_PRINT;
-		return json_encode( $data, $options );
+		return (string) json_encode( $data, $options );
 	}
 
+	/**
+	 *	@access		public
+	 *	@param		boolean		$printPretty		Flag: use pretty print on JSON encode
+	 *	@return		self
+	 */
 	public function setPrettyPrint( bool $printPretty ): self
 	{
 		$this->printPretty	= $printPretty;
 		return $this;
 	}
 
+	/**
+	 *	@access		public
+	 *	@param		array		$modules		...
+	 *	@return		self
+	 */
 	public function setModules( array $modules ): self
 	{
 		$this->modules	= $modules;
 		return $this;
 	}
 
+	/**
+	 *	@access		public
+	 *	@param		IniReader	$settings		...
+	 *	@return		self
+	 */
 	public function setSettings( IniReader $settings ): self
 	{
 		$this->settings	= $settings;

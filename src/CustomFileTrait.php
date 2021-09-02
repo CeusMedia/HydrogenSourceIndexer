@@ -1,10 +1,19 @@
 <?php
+/**
+ *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
+ *	@copyright	2021 Ceus Media
+ */
 namespace CeusMedia\HydrogenSourceIndexer;
 
 use DomainException;
+use RuntimeException;
 use function file_exists;
 use function is_null;
 
+/**
+ *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
+ *	@copyright	2021 Ceus Media
+ */
 trait CustomFileTrait
 {
 	/**	@var	string|NULL		$pathSource */

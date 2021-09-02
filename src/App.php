@@ -1,14 +1,24 @@
 <?php
+/**
+ *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
+ *	@copyright	2021 Ceus Media
+ */
 namespace CeusMedia\HydrogenSourceIndexer;
 
 use CLI;
 use CLI_ArgumentParser as CliArgumentParser;
 use FS_File_Writer as FileWriter;
 
+/**
+ *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
+ *	@copyright	2021 Ceus Media
+ */
 class App
 {
+	/**	@var	ComposerSupport	$composerSupport		Component to read composer information */
 	protected $composerSupport;
 
+	/**	@var	array			$neededComposerPackages	List of needed composer packages */
 	protected $neededComposerPackages		= [
 		'ceus-media/common',
 		'ceus-media/hydrogen-framework',
@@ -23,6 +33,10 @@ class App
 	/**	@var	string			$pathSource */
 	protected $pathSource;
 
+	/**
+	 *	@access		public
+	 *	@return		void
+	 */
 	public function __construct( string $pathSource )
 	{
 		if( !CLI::checkIsCLi( FALSE ) )
@@ -64,16 +78,10 @@ class App
 		exit;
 	}
 
-	public function getInstalledComposerPackages(): array
-	{
-		return $this->composerSupport->getInstalledPackages();
-	}
-
-	public function isInstalledComposerPackage( string $packageName ): bool
-	{
-		return $this->composerSupport->isInstalledPackage( $packageName );
-	}
-
+	/**
+	 *	@access		protected
+	 *	@return		void
+	 */
 	protected function checkComposerPackages()
 	{
 		foreach( $this->neededComposerPackages as $neededPackage )

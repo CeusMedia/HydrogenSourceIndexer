@@ -1,4 +1,8 @@
 <?php
+/**
+ *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
+ *	@copyright	2021 Ceus Media
+ */
 namespace CeusMedia\HydrogenSourceIndexer;
 
 use FS_File_Reader as FileReader;
@@ -9,6 +13,10 @@ use UI_HTML_Tag as HtmlTag;
 use DomainException;
 use RuntimeException;
 
+/**
+ *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
+ *	@copyright	2021 Ceus Media
+ */
 class HtmlRenderer
 {
 	use CustomFileTrait;
@@ -19,6 +27,10 @@ class HtmlRenderer
 	/** @var IniReader $settings */
 	protected $settings;
 
+	/**
+	 *	@access		public
+	 *	@return		string
+	 */
 	public function render(): string
 	{
 		if( $this->settings === NULL )
@@ -55,18 +67,32 @@ class HtmlRenderer
 		return $template;
 	}
 
+	/**
+	 *	@access		public
+	 *	@param		array		$modules		...
+	 *	@return		self
+	 */
 	public function setModules( array $modules ): self
 	{
 		$this->modules	= $modules;
 		return $this;
 	}
 
+	/**
+	 *	@access		public
+	 *	@param		IniReader	$settings		...
+	 *	@return		self
+	 */
 	public function setSettings( IniReader $settings ): self
 	{
 		$this->settings	= $settings;
 		return $this;
 	}
 
+	/**
+	 *	@access		protected
+	 *	@return		string
+	 */
 	protected function renderModules(): string
 	{
 		$descriptionRenderer	= new ModuleDescriptionRenderer();
