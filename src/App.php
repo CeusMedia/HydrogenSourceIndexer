@@ -46,11 +46,19 @@ class App
 		$this->composerSupport	= new ComposerSupport();
 		$this->checkComposerPackages();
 		$this->moduleIndex	= new ModuleIndex( $pathSource );
+		$this->moduleIndex->setMode( ModuleIndex::MODE_FULL );
 		$this->settings		= new IniReader( $pathSource );
 		$p = new CliArgumentParser();
 		$p->parseArguments();
 		$command	= current($p->get('commands'));
 		switch( $command ){
+			case 'serial':
+				$renderer	= new SerialRenderer();
+				$renderer->setSettings( $this->settings );
+				$renderer->setModules( $this->moduleIndex->index() );
+				FileWriter::save( $this->pathSource.'index.serial', $renderer->render() );
+				echo 'Created index.serial.'.PHP_EOL;
+				break;
 			case 'json':
 			case 'json-dev':
 				$renderer	= new JsonRenderer();

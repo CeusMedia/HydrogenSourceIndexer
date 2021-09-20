@@ -36,10 +36,10 @@ class IniReader extends Dictionary
 			die( $e->getMessage() );
 		}
 		parent::__construct( array_merge( [
-			'id'			=> NULL,
-			'title'			=> NULL,
-			'url'			=> NULL,
-			'description'	=> NULL,
+			'id'				=> NULL,
+			'title'				=> NULL,
+			'url'				=> NULL,
+			'description'		=> NULL,
 		], IniFileReader::load( $filePath ) ) );
 	}
 }

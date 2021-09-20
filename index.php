@@ -14,6 +14,7 @@ require_once __DIR__.'/src/CustomFileTrait.php';
 require_once __DIR__.'/src/ComposerSupport.php';
 require_once __DIR__.'/src/HtmlRenderer.php';
 require_once __DIR__.'/src/JsonRenderer.php';
+require_once __DIR__.'/src/SerialRenderer.php';
 require_once __DIR__.'/src/ModuleIndex.php';
 require_once __DIR__.'/src/IniReader.php';
 require_once __DIR__.'/src/ModuleDescriptionRenderer.php';

@@ -59,39 +59,35 @@ class ModuleIndex
 			$modulePath = preg_replace( $regExp, '', $entry->getPath() );
 			/** @var string $id */
 			$id			= str_replace( '/', '_', $modulePath );
-			if( !is_int( preg_match( '@^[A-Z]@', $modulePath ) ) )
+			if( preg_match( '@^[A-Z]@', $modulePath ) !== 1 )
 				continue;
 			try{
 				$module	= HydrogenModuleReader::load( (string) $entry->getPathname(), $id );
+				$module->path	= $modulePath;
+				unset( $module->isInstalled );
+				unset( $module->versionInstalled );
+				unset( $module->versionAvailable );
+				unset( $module->file );
+				unset( $module->uri );
 				switch( $mode ){
 					case self::MODE_MINIMAL:
-						$item	= (object) array(
+						$module	= (object) array(
 							'title'			=> $module->title,
 							'description'	=> $module->description,
 							'version'		=> $module->version,
 						);
 						break;
 					case self::MODE_REDUCED:
-						$item	= $module;
-						$item->path	= $modulePath;
-						unset( $item->config );
-						unset( $item->files );
-						unset( $item->hooks );
-						unset( $item->links );
-						unset( $item->install );
-						unset( $item->sql );
-						unset( $item->versionInstalled );
-						unset( $item->isInstalled );
-						unset( $item->versionAvailable );
-						unset( $item->jobs );
-						unset( $item->file );
-						unset( $item->uri );
+						unset( $module->config );
+						unset( $module->files );
+						unset( $module->hooks );
+						unset( $module->links );
+						unset( $module->install );
+						unset( $module->sql );
+						unset( $module->jobs );
 						break;
-					case self::MODE_FULL:
-					default:
-						$item	= $module;
 				}
-				$list[$id]	= $item;
+				$list[$id]	= $module;
 			}
 			catch( Exception $e ){
 			}
