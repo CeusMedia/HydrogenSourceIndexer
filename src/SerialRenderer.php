@@ -21,9 +21,6 @@ class SerialRenderer
 	/**	@var	IniReader	$settings */
 	protected $settings;
 
-	/**	@var	boolean		$printPretty */
-	protected $printPretty	= FALSE;
-
 	/**
 	 *	@access		public
 	 *	@return		string
@@ -43,21 +40,7 @@ class SerialRenderer
 			'date'			=> date( 'Y-m-d' ),
 			'modules'		=> $this->modules,
 		];
-		$serial	= serialize( $data );
-		if( $this->printPretty )
-			$serial	= \FormatSerialize::format( $serial );
-		return $serial;
-	}
-
-	/**
-	 *	@access		public
-	 *	@param		boolean		$printPretty		Flag: use pretty print on JSON encode
-	 *	@return		self
-	 */
-	public function setPrettyPrint( bool $printPretty ): self
-	{
-		$this->printPretty	= $printPretty;
-		return $this;
+		return serialize( $data );
 	}
 
 	/**
