@@ -79,8 +79,9 @@ class App
 			default:
 				print( 'Usage: php index.php COMMAND'.PHP_EOL );
 				print( 'Commands:'.PHP_EOL );
-				print( '  json - creates JSON index'.PHP_EOL );
-				print( '  html - creates HTML index'.PHP_EOL );
+				print( '  serial - creates serial index'.PHP_EOL );
+				print( '  json   - creates JSON index'.PHP_EOL );
+				print( '  html   - creates HTML index'.PHP_EOL );
 				die();
 		}
 		exit;
