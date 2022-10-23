@@ -1,15 +1,17 @@
-<?php
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
+
 /**
  *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
  *	@copyright	2021 Ceus Media
  */
 namespace CeusMedia\HydrogenSourceIndexer;
 
-use CMF_Hydrogen_Environment_Resource_Module_Reader as HydrogenModuleReader;
-use FS_File_RecursiveNameFilter as RecursiveFileNameIndex;
+use CeusMedia\HydrogenFramework\Environment\Resource\Module\Reader as HydrogenModuleReader;
+use CeusMedia\Common\FS\File\RecursiveNameFilter as RecursiveFileNameIndex;
 
 use Exception;
 use RangeException;
+use SplFileObject;
 
 /**
  *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
@@ -17,21 +19,21 @@ use RangeException;
  */
 class ModuleIndex
 {
-	const MODE_FULL		= 0;
-	const MODE_MINIMAL	= 1;
-	const MODE_REDUCED	= 2;
+	public const MODE_FULL		= 0;
+	public const MODE_MINIMAL	= 1;
+	public const MODE_REDUCED	= 2;
 
-	const MODES			= [
+	public const MODES			= [
 		self::MODE_FULL,
 		self::MODE_MINIMAL,
 		self::MODE_REDUCED,
 	];
 
 	/**	@var	integer		$mode			Index mode */
-	protected $mode	= self::MODE_REDUCED;
+	protected int $mode	= self::MODE_REDUCED;
 
 	/**	@var	string		$pathSource		Path to module source root */
-	protected $pathSource;
+	protected string $pathSource;
 
 	/**
 	 *	@access		public
@@ -51,9 +53,10 @@ class ModuleIndex
 	public function index( ?int $mode = NULL ): array
 	{
 		$mode	= $mode ?? $this->mode;
-		$list	= array();
+		$list	= [];
 		$index	= new RecursiveFileNameIndex( $this->pathSource, 'module.xml' );
 		$regExp	= '@^'.preg_quote( $this->pathSource, '@' ).'@';
+		/** @var SplFileObject $entry */
 		foreach( $index as $entry ){
 			/** @var string $modulePath */
 			$modulePath = preg_replace( $regExp, '', $entry->getPath() );
@@ -62,7 +65,7 @@ class ModuleIndex
 			if( preg_match( '@^[A-Z]@', $modulePath ) !== 1 )
 				continue;
 			try{
-				$module	= HydrogenModuleReader::load( (string) $entry->getPathname(), $id );
+				$module	= HydrogenModuleReader::load( $entry->getPathname(), $id );
 				$module->path	= $modulePath;
 				unset( $module->isInstalled );
 				unset( $module->versionInstalled );
@@ -71,11 +74,11 @@ class ModuleIndex
 				unset( $module->uri );
 				switch( $mode ){
 					case self::MODE_MINIMAL:
-						$module	= (object) array(
+						$module	= (object) [
 							'title'			=> $module->title,
 							'description'	=> $module->description,
 							'version'		=> $module->version,
-						);
+						];
 						break;
 					case self::MODE_REDUCED:
 						unset( $module->config );

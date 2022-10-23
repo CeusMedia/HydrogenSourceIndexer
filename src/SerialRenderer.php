@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
+
 /**
  *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
  *	@copyright	2021 Ceus Media
@@ -15,11 +16,11 @@ use function json_encode;
  */
 class SerialRenderer
 {
-	/**	@var	array		$modules */
-	protected $modules	= [];
+	/**	@var	array			$modules */
+	protected array $modules	= [];
 
-	/**	@var	IniReader	$settings */
-	protected $settings;
+	/**	@var	IniReader|NULL	$settings */
+	protected ?IniReader $settings;
 
 	/**
 	 *	@access		public

@@ -1,12 +1,13 @@
-<?php
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
+
 /**
  *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
  *	@copyright	2021 Ceus Media
  */
 namespace CeusMedia\HydrogenSourceIndexer;
 
-use ADT_List_Dictionary as Dictionary;
-use FS_File_INI_Reader as IniFileReader;
+use CeusMedia\Common\ADT\Collection\Dictionary as Dictionary;
+use CeusMedia\Common\FS\File\INI\Reader as IniFileReader;
 
 use DomainException;
 
@@ -19,7 +20,7 @@ class IniReader extends Dictionary
 	use CustomFileTrait;
 
 	/**	@var	string		$fileName	Name of settings file */
-	protected $fileName	= '.index.ini';
+	protected string $fileName	= '.index.ini';
 
 	/**
 	 *	@access		public
@@ -40,6 +41,6 @@ class IniReader extends Dictionary
 			'title'				=> NULL,
 			'url'				=> NULL,
 			'description'		=> NULL,
-		], IniFileReader::load( $filePath ) ) );
+		], IniFileReader::loadArray( $filePath ) ) );
 	}
 }

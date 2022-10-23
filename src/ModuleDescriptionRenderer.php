@@ -1,12 +1,13 @@
-<?php
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
+
 /**
  *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
  *	@copyright	2021 Ceus Media
  */
 namespace CeusMedia\HydrogenSourceIndexer;
 
-use UI_HTML_Tag as HtmlTag;
-use UI_HTML_Elements as HtmlElements;
+use CeusMedia\Common\UI\HTML\Tag as HtmlTag;
+use CeusMedia\Common\UI\HTML\Elements as HtmlElements;
 
 /**
  *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
@@ -15,16 +16,16 @@ use UI_HTML_Elements as HtmlElements;
 class ModuleDescriptionRenderer
 {
 	/**	@var	string		$linkClass		... */
-	public static $linkClass		= 'icon-label';
+	public static string $linkClass			= 'icon-label';
 
 	/**	@var	string		$linkTarget		... */
-	public static $linkTarget		= '_self';
+	public static string $linkTarget		= '_self';
 
 	/**	@var	array		$callbacks		... */
-	protected static $callbacks		= array();
+	protected static array $callbacks		= [];
 
-	/**	@var	string		$content	... */
-	protected $content				= '';
+	/**	@var	string		$content		... */
+	protected string $content				= '';
 
 	/**
 	 *	@access		public
@@ -152,7 +153,7 @@ class ModuleDescriptionRenderer
 		for( $i=0; $i<count($matches[0]); $i++ ){
 			$query		= trim( $matches[1][$i] );
 			$title		= isset( $matches[3][$i] ) ? trim( $matches[3][$i] ) : $query;
-			$url		= 'http://de.wikipedia.org/wiki/'.$query;
+			$url		= 'https://de.wikipedia.org/wiki/'.$query;
 			$class		= ( self::$linkClass ? self::$linkClass.' ' : '' ).'link-wiki';
 			$link		= HtmlElements::Link( $url, $title, $class, self::$linkTarget );
 			$content	= str_replace( $matches[0][$i], $link, $content );
@@ -172,7 +173,7 @@ class ModuleDescriptionRenderer
 		for( $i=0; $i<count( $matches[0] ); $i++ ){
 			$query		= trim( $matches[1][$i] );
 			$title		= isset( $matches[3][$i] ) ? trim( $matches[3][$i] ) : $query;
-			$url		= 'http://www.youtube.com/watch?v='.$query;
+			$url		= 'https://www.youtube.com/watch?v='.$query;
 			$class		= ( self::$linkClass ? self::$linkClass.' ' : '' ).'link-youtube';
 			$link		= HtmlElements::Link( $url, $title, $class, self::$linkTarget );
 			$content	= str_replace( $matches[0][$i], $link, $content );
@@ -217,8 +218,8 @@ class ModuleDescriptionRenderer
 			$lines		= explode( "\n", trim( $matches[4][$i] ) );
 			foreach( $lines as $nr => $line )
 				$lines[$nr]	= preg_replace( '/^- /', '<li>', trim( $lines[$nr] ) ).'</li>';
-			$lines	= implode( "\n", $lines );
-			$attributes	= array( 'class' => $class ? $class : 'list');
+			$lines		= implode( "\n", $lines );
+			$attributes	= ['class' => $class ? $class : 'list'];
 			$new		= HtmlTag::create( $type.'l', $lines, $attributes );
 			$content	= str_replace( $matches[0][$i], $new, $content );
 		}

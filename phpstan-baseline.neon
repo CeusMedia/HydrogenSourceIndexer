@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#2 \\$content of static method UI_HTML_Tag\\:\\:create\\(\\) expects string\\|null, array\\<int, string\\> given\\.$#"
-			count: 6
-			path: src/HtmlRenderer.php
-
-		-
 			message: "#^Method CeusMedia\\\\HydrogenSourceIndexer\\\\ModuleDescriptionRenderer\\:\\:formatCodeBlocks\\(\\) should return string but returns string\\|null\\.$#"
 			count: 1
 			path: src/ModuleDescriptionRenderer.php

@@ -1,13 +1,14 @@
-<?php
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
+
 /**
  *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
  *	@copyright	2021 Ceus Media
  */
 namespace CeusMedia\HydrogenSourceIndexer;
 
-use CLI;
-use CLI_ArgumentParser as CliArgumentParser;
-use FS_File_Writer as FileWriter;
+use CeusMedia\Common\CLI;
+use CeusMedia\Common\CLI\ArgumentParser as CliArgumentParser;
+use CeusMedia\Common\FS\File\Writer as FileWriter;
 
 /**
  *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
@@ -16,22 +17,22 @@ use FS_File_Writer as FileWriter;
 class App
 {
 	/**	@var	ComposerSupport	$composerSupport		Component to read composer information */
-	protected $composerSupport;
+	protected ComposerSupport $composerSupport;
 
 	/**	@var	array			$neededComposerPackages	List of needed composer packages */
-	protected $neededComposerPackages		= [
+	protected array $neededComposerPackages		= [
 		'ceus-media/common',
 		'ceus-media/hydrogen-framework',
 	];
 
 	/**	@var	ModuleIndex		$moduleIndex	Component to list modules */
-	protected $moduleIndex;
+	protected ModuleIndex $moduleIndex;
 
 	/**	@var	IniReader		$settings */
-	protected $settings;
+	protected IniReader $settings;
 
 	/**	@var	string			$pathSource */
-	protected $pathSource;
+	protected string $pathSource;
 
 	/**
 	 *	@access		public
@@ -45,12 +46,12 @@ class App
 		$this->pathSource		= $pathSource;
 		$this->composerSupport	= new ComposerSupport();
 		$this->checkComposerPackages();
-		$this->moduleIndex	= new ModuleIndex( $pathSource );
+		$this->moduleIndex		= new ModuleIndex( $pathSource );
 		$this->moduleIndex->setMode( ModuleIndex::MODE_FULL );
-		$this->settings		= new IniReader( $pathSource );
-		$p = new CliArgumentParser();
+		$this->settings			= new IniReader( $pathSource );
+		$p	= new CliArgumentParser();
 		$p->parseArguments();
-		$command	= current($p->get('commands'));
+		$command	= current( (array) $p->get( 'commands' ) );
 		switch( $command ){
 			case 'serial':
 				$renderer	= new SerialRenderer();
