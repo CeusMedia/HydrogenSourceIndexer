@@ -46,7 +46,7 @@ class App
 		$this->pathSource		= $pathSource;
 		$this->composerSupport	= new ComposerSupport();
 		$this->checkComposerPackages();
-		$this->moduleIndex		= new ModuleIndex( $pathSource );
+		$this->moduleIndex		= new ModuleIndex( $pathSource.'src/' );
 		$this->moduleIndex->setMode( ModuleIndex::MODE_FULL );
 		$this->settings			= new IniReader( $pathSource );
 		$p	= new CliArgumentParser();
