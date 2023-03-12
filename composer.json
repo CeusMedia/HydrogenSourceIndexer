@@ -20,7 +20,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.4 | ^8",
-        "ceus-media/common": "^0.9 | 0.9-dev",
+        "ceus-media/common": "^1.0 | 1.0.x-dev | ^0.9 | 0.9-dev",
         "ceus-media/hydrogen-framework": "^0.9 | 0.9.x-dev",
         "ext-json": "*"
     },
