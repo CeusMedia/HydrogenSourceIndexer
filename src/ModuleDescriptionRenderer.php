@@ -41,6 +41,7 @@ class ModuleDescriptionRenderer
 		$content	= self::formatLinks( $content );
 		$content	= self::formatCurrencies( $content );
 		$content	= self::formatWikiLinks( $content );
+		/** @noinspection PhpUnnecessaryLocalVariableInspection */
 		$content	= self::formatYoutubeLinks( $content );
 		return $content;
 	}
@@ -96,11 +97,12 @@ class ModuleDescriptionRenderer
 		for( $i=0; $i<count( $matches[0] ); $i++ ){
 			$type		= $matches[2][$i];
 			$code		= trim( $matches[3][$i] );
-			$attributes	= array( 'class' => $type ? $type : 'code' );
+			$attributes	= ['class' => $type ? $type : 'code'];
 			$new		= HtmlTag::create( 'xmp', $code, $attributes );
 			$content	= str_replace( $matches[0][$i], $new, $content );
 		}
-		return preg_replace( '/_____(\/?)code_____/', '<\\1code>', $content ) ?? '';					//  recreate <code> tags
+		//  recreate <code> tags
+		return preg_replace( '/_____(\/?)code_____/', '<\\1code>', $content ) ?? '';
 	}
 
 	/**
@@ -187,6 +189,8 @@ class ModuleDescriptionRenderer
 	 */
 	protected static function formatText( string $content ): string
 	{
+		/** @noinspection XmlDeprecatedElement */
+		/** @noinspection HtmlDeprecatedTag */
 		return self::multiPregReplace( $content, [
 			"/####(.+)####\r?\n/U"	=> "<h5>\\1</h5>\n",
 			"/###(.+)###\r?\n/U"	=> "<h4>\\1</h4>\n",
@@ -208,11 +212,11 @@ class ModuleDescriptionRenderer
 	 */
 	protected static function formatLists( string $content ): string
 	{
-		$pattern	= "/(\r?\n)*(o|u)?list:?(\w+)?>(.*)<(o|u)?list(\r?\n)*/siU";
+		$pattern	= "/(\r?\n)*([ou])?list:?(\w+)?>(.*)<([ou])?list(\r?\n)*/siU";
 		$matches	= array();
 		preg_match_all( $pattern, $content, $matches );
 		for( $i=0; $i<count( $matches[0] ); $i++ ){
-			$type		= $matches[2][$i] ? $matches[2][$i] : 'u';
+			$type		= $matches[2][$i] ?? 'u';
 			$class		= $matches[3][$i];
 			$lines		= explode( "\n", trim( $matches[4][$i] ) );
 			foreach( $lines as $nr => $line )

@@ -15,7 +15,7 @@ use Composer\InstalledVersions as Composer;
 class ComposerSupport
 {
 	/**	@var	array		$installedComposerPackages	List of installed composer packages */
-	protected $installedComposerPackages	= [];
+	protected array $installedComposerPackages	= [];
 
 	/**
 	 *	@access		public
@@ -50,7 +50,7 @@ class ComposerSupport
 	 *	@access		protected
 	 *	@return		void
 	 */
-	protected function checkComposer2()
+	protected function checkComposer2(): void
 	{
 		if( !class_exists( Composer::class ) )
 			die( 'Use composer 2, please!' );

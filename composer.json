@@ -19,10 +19,9 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "php": "^7.4 | ^8",
-        "ceus-media/common": "^1.0 | 1.0.x-dev | ^0.9 | 0.9-dev",
-        "ceus-media/hydrogen-framework": "^1.0 | 1.0.x-dev | ^0.9 | 0.9.x-dev",
-        "ext-json": "*"
+        "php": "^8.1",
+        "ceus-media/common": "^1.0 | 1.0.x-dev",
+        "ceus-media/hydrogen-framework": "^1.0 | 1.0.x-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5 | ^10",
@@ -58,5 +57,33 @@
         "dev:phpstan-clear": "Clear PHPStan cache",
         "dev:phpstan-save": "Store current results in ignore list",
         "dev:test-syntax": "Validate code base syntax using PHP linter"
-    }
+    },
+  "scripts": {
+    "dev:install": "composer install --quiet",
+    "dev:update": "composer update",
+    "dev:phpstan": [
+      "@dev:install",
+      "vendor/bin/phpstan analyse --configuration phpstan.neon"
+    ],
+    "dev:phpstan-clear": [
+      "@dev:install",
+      "vendor/bin/phpstan clear-result-cache --verbose"
+    ],
+    "dev:phpstan-save": [
+      "@dev:install",
+      "vendor/bin/phpstan analyse --configuration phpstan.neon --generate-baseline phpstan-baseline.neon"
+    ],
+    "dev:test-syntax": [
+      "@dev:install",
+      "vendor/bin/parallel-lint . -j 10 --colors --exclude vendor"
+    ]
+  },
+  "scripts-descriptions": {
+    "dev:install": "Installs project dependencies for Development stage",
+    "dev:update": "Updates project dependencies for Development stage",
+    "dev:phpstan": "Validate codebase with PHPStan",
+    "dev:phpstan-clear": "Clear PHPStan cache",
+    "dev:phpstan-save": "Store current results in ignore list",
+    "dev:test-syntax": "Validate code base syntax using PHP linter"
+  }
 }

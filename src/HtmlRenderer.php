@@ -23,10 +23,10 @@ class HtmlRenderer
 	use CustomFileTrait;
 
 	/** @var array $modules */
-	protected array $modules	= [];
+	protected array $modules		= [];
 
-	/** @var IniReader $settings */
-	protected $settings;
+	/** @var ?IniReader $settings */
+	protected ?IniReader $settings	= NULL;
 
 	/**
 	 *	@access		public
@@ -63,7 +63,10 @@ class HtmlRenderer
 			'date'			=> $this->settings->get( 'id' ),
 			'modules'		=> $modules,
 		];
-		/** @var string $content */
+		/**
+		 * @var string $placeholder
+		 * @var string $content
+		 */
 		foreach( $data as $placeholder => $content )
 			$template	= str_replace( '{{ '.$placeholder.' }}', $content, $template );
 		return $template;

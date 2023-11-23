@@ -21,5 +21,4 @@ require_once __DIR__.'/src/App.php';
 
 $pathSource	= dirname( __DIR__, 3 ) .'/';
 
-new DevOutput;
 new App( $pathSource );

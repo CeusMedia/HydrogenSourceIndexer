@@ -92,7 +92,7 @@ class ModuleIndex
 				}
 				$list[$id]	= $module;
 			}
-			catch( Exception $e ){
+			catch( Exception ){
 			}
 		}
 		ksort( $list );

@@ -36,9 +36,9 @@ class App
 
 	/**
 	 *	@access		public
-	 *	@return		void
+	 *	@return		never-return
 	 */
-	public function __construct( string $pathSource )
+	public function __construct(string $pathSource )
 	{
 		if( !CLI::checkIsCli( FALSE ) )
 			die( 'This application is for CLI use, only.' );
@@ -51,7 +51,9 @@ class App
 		$this->settings			= new IniReader( $pathSource );
 		$p	= new CliArgumentParser();
 		$p->parseArguments();
-		$command	= current( (array) $p->get( 'commands' ) );
+		/** @var array $commands */
+		$commands	= $p->get( 'commands' );
+		$command	= current( $commands );
 		switch( $command ){
 			case 'serial':
 				$renderer	= new SerialRenderer();
@@ -92,7 +94,7 @@ class App
 	 *	@access		protected
 	 *	@return		void
 	 */
-	protected function checkComposerPackages()
+	protected function checkComposerPackages(): void
 	{
 		foreach( $this->neededComposerPackages as $neededPackage )
 			if( !$this->composerSupport->isInstalledPackage( $neededPackage ) )

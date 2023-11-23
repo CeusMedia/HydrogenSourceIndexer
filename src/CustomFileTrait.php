@@ -18,7 +18,7 @@ use function is_null;
 trait CustomFileTrait
 {
 	/**	@var	string|NULL		$pathSource */
-	protected $pathSource;
+	protected ?string $pathSource;
 
 	/**
 	 *	...
@@ -46,9 +46,9 @@ trait CustomFileTrait
 	 *	Set path to module source.
 	 *	@access		public
 	 *	@param		string		$pathSource
-	 *	@return		self
+	 *	@return		HtmlRenderer|IniReader
 	 */
-	public function setSourcePath( string $pathSource ): self
+	public function setSourcePath( string $pathSource ): HtmlRenderer|IniReader
 	{
 		$this->pathSource	= $pathSource;
 		return $this;
