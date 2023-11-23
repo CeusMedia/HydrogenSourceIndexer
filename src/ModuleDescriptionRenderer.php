@@ -1,12 +1,13 @@
-<?php
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
+
 /**
  *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
  *	@copyright	2021 Ceus Media
  */
 namespace CeusMedia\HydrogenSourceIndexer;
 
-use UI_HTML_Tag as HtmlTag;
-use UI_HTML_Elements as HtmlElements;
+use CeusMedia\Common\UI\HTML\Tag as HtmlTag;
+use CeusMedia\Common\UI\HTML\Elements as HtmlElements;
 
 /**
  *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
@@ -15,16 +16,13 @@ use UI_HTML_Elements as HtmlElements;
 class ModuleDescriptionRenderer
 {
 	/**	@var	string		$linkClass		... */
-	public static $linkClass		= 'icon-label';
+	public static string $linkClass			= 'icon-label';
 
 	/**	@var	string		$linkTarget		... */
-	public static $linkTarget		= '_self';
+	public static string $linkTarget		= '_self';
 
-	/**	@var	array		$callbacks		... */
-	protected static $callbacks		= array();
-
-	/**	@var	string		$content	... */
-	protected $content				= '';
+	/**	@var	string		$content		... */
+	protected string $content				= '';
 
 	/**
 	 *	@access		public
@@ -40,6 +38,7 @@ class ModuleDescriptionRenderer
 		$content	= self::formatLinks( $content );
 		$content	= self::formatCurrencies( $content );
 		$content	= self::formatWikiLinks( $content );
+		/** @noinspection PhpUnnecessaryLocalVariableInspection */
 		$content	= self::formatYoutubeLinks( $content );
 		return $content;
 	}
@@ -88,19 +87,19 @@ class ModuleDescriptionRenderer
 	 */
 	protected static function formatCodeBlocks( string $content ): string
 	{
-		$content	= preg_replace( '/<(\/?)code>/', "_____\\1code_____", $content );				//  preserve <code> tags
+		$content	= preg_replace( '/<(\/?)code>/', "_____\\1code_____", $content ) ?? '';			//  preserve <code> tags
 		$pattern	= "/(\r?\n)*code:?(\w+)?>(.*)<code(\r?\n)*/siU";
 		$matches	= array();
 		preg_match_all( $pattern, $content, $matches );
 		for( $i=0; $i<count( $matches[0] ); $i++ ){
 			$type		= $matches[2][$i];
 			$code		= trim( $matches[3][$i] );
-			$attributes	= array( 'class' => $type ? $type : 'code' );
+			$attributes	= ['class' => $type ? $type : 'code'];
 			$new		= HtmlTag::create( 'xmp', $code, $attributes );
 			$content	= str_replace( $matches[0][$i], $new, $content );
 		}
-		$content	= preg_replace( '/_____(\/?)code_____/', '<\\1code>', $content );				//  recreate <code> tags
-		return $content;
+		//  recreate <code> tags
+		return preg_replace( '/_____(\/?)code_____/', '<\\1code>', $content ) ?? '';
 	}
 
 	/**
@@ -115,7 +114,7 @@ class ModuleDescriptionRenderer
 		for( $i=0; $i<count( $matches[0] ); $i++ ){
 			$url		= $matches[1][$i];
 			$title		= str_replace( ' ', '&nbsp;', trim( $matches[3][$i] ) );
-			$class		= ( self::$linkClass ? self::$linkClass.' ' : '' ).'link-external';
+			$class		= ( '' !== self::$linkClass ? self::$linkClass.' ' : '' ).'link-external';
 			$link		= HtmlElements::Link( $url, $title, $class, self::$linkTarget );
 			$content	= str_replace( $matches[0][$i], $link, $content );
 		}
@@ -152,8 +151,8 @@ class ModuleDescriptionRenderer
 		for( $i=0; $i<count($matches[0]); $i++ ){
 			$query		= trim( $matches[1][$i] );
 			$title		= isset( $matches[3][$i] ) ? trim( $matches[3][$i] ) : $query;
-			$url		= 'http://de.wikipedia.org/wiki/'.$query;
-			$class		= ( self::$linkClass ? self::$linkClass.' ' : '' ).'link-wiki';
+			$url		= 'https://de.wikipedia.org/wiki/'.$query;
+			$class		= ( '' !== self::$linkClass ? self::$linkClass.' ' : '' ).'link-wiki';
 			$link		= HtmlElements::Link( $url, $title, $class, self::$linkTarget );
 			$content	= str_replace( $matches[0][$i], $link, $content );
 		}
@@ -172,8 +171,8 @@ class ModuleDescriptionRenderer
 		for( $i=0; $i<count( $matches[0] ); $i++ ){
 			$query		= trim( $matches[1][$i] );
 			$title		= isset( $matches[3][$i] ) ? trim( $matches[3][$i] ) : $query;
-			$url		= 'http://www.youtube.com/watch?v='.$query;
-			$class		= ( self::$linkClass ? self::$linkClass.' ' : '' ).'link-youtube';
+			$url		= 'https://www.youtube.com/watch?v='.$query;
+			$class		= ( '' !== self::$linkClass ? self::$linkClass.' ' : '' ).'link-youtube';
 			$link		= HtmlElements::Link( $url, $title, $class, self::$linkTarget );
 			$content	= str_replace( $matches[0][$i], $link, $content );
 		}
@@ -187,6 +186,8 @@ class ModuleDescriptionRenderer
 	 */
 	protected static function formatText( string $content ): string
 	{
+		/** @noinspection XmlDeprecatedElement */
+		/** @noinspection HtmlDeprecatedTag */
 		return self::multiPregReplace( $content, [
 			"/####(.+)####\r?\n/U"	=> "<h5>\\1</h5>\n",
 			"/###(.+)###\r?\n/U"	=> "<h4>\\1</h4>\n",
@@ -208,17 +209,17 @@ class ModuleDescriptionRenderer
 	 */
 	protected static function formatLists( string $content ): string
 	{
-		$pattern	= "/(\r?\n)*(o|u)?list:?(\w+)?>(.*)<(o|u)?list(\r?\n)*/siU";
+		$pattern	= "/(\r?\n)*([ou])?list:?(\w+)?>(.*)<([ou])?list(\r?\n)*/siU";
 		$matches	= array();
 		preg_match_all( $pattern, $content, $matches );
 		for( $i=0; $i<count( $matches[0] ); $i++ ){
-			$type		= $matches[2][$i] ? $matches[2][$i] : 'u';
+			$type		= $matches[2][$i] ?? 'u';
 			$class		= $matches[3][$i];
 			$lines		= explode( "\n", trim( $matches[4][$i] ) );
 			foreach( $lines as $nr => $line )
-				$lines[$nr]	= preg_replace( '/^- /', '<li>', trim( $lines[$nr] ) ).'</li>';
+				$lines[$nr]	= preg_replace( '/^- /', '<li>', trim( $line ) ).'</li>';
 			$lines	= implode( "\n", $lines );
-			$attributes	= array( 'class' => $class ? $class : 'list');
+			$attributes	= ['class' => $class ? $class : 'list'];
 			$new		= HtmlTag::create( $type.'l', $lines, $attributes );
 			$content	= str_replace( $matches[0][$i], $new, $content );
 		}

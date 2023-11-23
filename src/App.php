@@ -1,13 +1,14 @@
-<?php
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
+
 /**
  *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
  *	@copyright	2021 Ceus Media
  */
 namespace CeusMedia\HydrogenSourceIndexer;
 
-use CLI;
-use CLI_ArgumentParser as CliArgumentParser;
-use FS_File_Writer as FileWriter;
+use CeusMedia\Common\CLI;
+use CeusMedia\Common\CLI\ArgumentParser as CliArgumentParser;
+use CeusMedia\Common\FS\File\Writer as FileWriter;
 
 /**
  *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
@@ -16,30 +17,30 @@ use FS_File_Writer as FileWriter;
 class App
 {
 	/**	@var	ComposerSupport	$composerSupport		Component to read composer information */
-	protected $composerSupport;
+	protected ComposerSupport $composerSupport;
 
 	/**	@var	array			$neededComposerPackages	List of needed composer packages */
-	protected $neededComposerPackages		= [
+	protected array $neededComposerPackages		= [
 		'ceus-media/common',
 		'ceus-media/hydrogen-framework',
 	];
 
 	/**	@var	ModuleIndex		$moduleIndex	Component to list modules */
-	protected $moduleIndex;
+	protected ModuleIndex $moduleIndex;
 
 	/**	@var	IniReader		$settings */
-	protected $settings;
+	protected IniReader $settings;
 
 	/**	@var	string			$pathSource */
-	protected $pathSource;
+	protected string $pathSource;
 
 	/**
 	 *	@access		public
-	 *	@return		void
+	 *	@return		never-return
 	 */
-	public function __construct( string $pathSource )
+	public function __construct(string $pathSource )
 	{
-		if( !CLI::checkIsCLi( FALSE ) )
+		if( !CLI::checkIsCli( FALSE ) )
 			die( 'This application is for CLI use, only.' );
 
 		$this->pathSource		= $pathSource;
@@ -50,7 +51,9 @@ class App
 		$this->settings		= new IniReader( $pathSource );
 		$p = new CliArgumentParser();
 		$p->parseArguments();
-		$command	= current($p->get('commands'));
+		/** @var array $commands */
+		$commands	= $p->get( 'commands' );
+		$command	= current( $commands );
 		switch( $command ){
 			case 'serial':
 				$renderer	= new SerialRenderer();
@@ -91,7 +94,7 @@ class App
 	 *	@access		protected
 	 *	@return		void
 	 */
-	protected function checkComposerPackages()
+	protected function checkComposerPackages(): void
 	{
 		foreach( $this->neededComposerPackages as $neededPackage )
 			if( !$this->composerSupport->isInstalledPackage( $neededPackage ) )

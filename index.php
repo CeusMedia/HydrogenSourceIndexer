@@ -20,7 +20,6 @@ require_once __DIR__.'/src/IniReader.php';
 require_once __DIR__.'/src/ModuleDescriptionRenderer.php';
 require_once __DIR__.'/src/App.php';
 
-$pathSource	= dirname( dirname( dirname( __DIR__ ) ) ).'/';
+$pathSource	= dirname( __DIR__, 3 ) .'/';
 
-new DevOutput;
 new App( $pathSource );

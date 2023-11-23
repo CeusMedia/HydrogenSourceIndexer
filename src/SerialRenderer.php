@@ -7,7 +7,6 @@ namespace CeusMedia\HydrogenSourceIndexer;
 
 use RuntimeException;
 use function date;
-use function json_encode;
 
 /**
  *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
@@ -16,10 +15,10 @@ use function json_encode;
 class SerialRenderer
 {
 	/**	@var	array		$modules */
-	protected $modules	= [];
+	protected array $modules			= [];
 
-	/**	@var	IniReader	$settings */
-	protected $settings;
+	/**	@var	?IniReader	$settings */
+	protected ?IniReader $settings		= NULL;
 
 	/**
 	 *	@access		public

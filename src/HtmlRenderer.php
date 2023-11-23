@@ -1,14 +1,14 @@
-<?php
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
+
 /**
  *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
  *	@copyright	2021 Ceus Media
  */
 namespace CeusMedia\HydrogenSourceIndexer;
 
-use FS_File_Reader as FileReader;
-use UI_HTML_Elements as HtmlElements;
-use UI_HTML_PageFrame as HtmlPage;
-use UI_HTML_Tag as HtmlTag;
+use CeusMedia\Common\FS\File\Reader as FileReader;
+use CeusMedia\Common\UI\HTML\PageFrame as HtmlPage;
+use CeusMedia\Common\UI\HTML\Tag as HtmlTag;
 
 use DomainException;
 use RuntimeException;
@@ -22,10 +22,10 @@ class HtmlRenderer
 	use CustomFileTrait;
 
 	/** @var array $modules */
-	protected $modules	= [];
+	protected array $modules		= [];
 
-	/** @var IniReader $settings */
-	protected $settings;
+	/** @var ?IniReader $settings */
+	protected ?IniReader $settings	= NULL;
 
 	/**
 	 *	@access		public
@@ -62,6 +62,10 @@ class HtmlRenderer
 			'date'			=> $this->settings->get( 'id' ),
 			'modules'		=> $modules,
 		];
+		/**
+		 * @var string $placeholder
+		 * @var string $content
+		 */
 		foreach( $data as $placeholder => $content )
 			$template	= str_replace( '{{ '.$placeholder.' }}', $content, $template );
 		return $template;

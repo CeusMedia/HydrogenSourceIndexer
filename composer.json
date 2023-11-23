@@ -19,13 +19,46 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.3",
-        "ceus-media/common": "^0.9 | ^0.8 | dev-master",
-        "ceus-media/hydrogen-framework": "^0.9 | ^0.8 | dev-master"
+        "php": "^8.1",
+        "ceus-media/common": "^1.0 | 1.0.x-dev",
+        "ceus-media/hydrogen-framework": "^1.0 | 1.0.x-dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "*",
-        "phpstan/phpstan": "*",
-        "phpstan/phpstan-strict-rules": "*"
+        "phpunit/phpunit": "^9.5 | ^10",
+        "phpstan/phpstan": "^1",
+        "phpstan/phpstan-strict-rules": "^1"
+    },
+    "scripts": {
+        "dev:install": "composer install --quiet",
+        "dev:update": "composer update",
+        "dev:phpunit": [
+            "@dev:install",
+            "php vendor/bin/phpunit --configuration phpunit9.xml --testsuite units"
+        ],
+        "dev:phpstan": [
+            "@dev:install",
+            "XDEBUG_MODE=off vendor/bin/phpstan analyze --configuration=phpstan.neon --memory-limit=1G --verbose"
+        ],
+        "dev:phpstan-clear": [
+            "@dev:install",
+            "vendor/bin/phpstan clear-result-cache --verbose"
+        ],
+        "dev:phpstan-save": [
+            "@dev:install",
+            "vendor/bin/phpstan analyse --configuration phpstan.neon --generate-baseline phpstan-baseline.neon --verbose"
+        ],
+        "dev:test-syntax": [
+            "@dev:install",
+            "vendor/bin/parallel-lint . -j 10 --colors --exclude vendor"
+        ]
+    },
+    "scripts-descriptions": {
+        "dev:install": "Installs project dependencies for Development stage",
+        "dev:update": "Updates project dependencies for Development stage",
+        "dev:unit": "Run unit tests",
+        "dev:phpstan": "Validate codebase with PHPStan",
+        "dev:phpstan-clear": "Clear PHPStan cache",
+        "dev:phpstan-save": "Store current results in ignore list",
+        "dev:test-syntax": "Validate code base syntax using PHP linter"
     }
 }

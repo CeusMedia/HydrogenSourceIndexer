@@ -1,14 +1,13 @@
 # Hydrogen Source Indexer
 
-In short: A tool to create an JSON index file for a collection of modules, usable with the Hydrogen framework.
+![Branch](https://img.shields.io/badge/Branch-main-blue?style=flat-square)
+![Release](https://img.shields.io/badge/Release-0.3.0-blue?style=flat-square)
+![PHP version](https://img.shields.io/badge/PHP-%5E8.1-blue?style=flat-square&color=777BB4)
+![PHPStan level](https://img.shields.io/badge/PHPStan_level-max+strict-darkgreen?style=flat-square)
+[![Total downloads](http://img.shields.io/packagist/dt/ceus-media/common.svg?style=flat-square)](https://packagist.org/packages/ceus-media/common)
+[![License](https://img.shields.io/packagist/l/ceus-media/common.svg?style=flat-square)](https://packagist.org/packages/ceus-media/common)
 
-[![Package version](http://img.shields.io/packagist/v/ceus-media/hydrogen-source-indexer.svg?style=flat-square)](https://packagist.org/packages/ceus-media/hydrogen-source-indexer)
-[![Monthly downloads](http://img.shields.io/packagist/dt/ceus-media/hydrogen-source-indexer.svg?style=flat-square)](https://packagist.org/packages/ceus-media/hydrogen-source-indexer)
-[![PHP version](http://img.shields.io/packagist/php-v/ceus-media/hydrogen-source-indexer.svg?style=flat-square)](https://packagist.org/packages/ceus-media/hydrogen-source-indexer)
-[![PHPStan level](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat-square)](https://packagist.org/packages/ceus-media/hydrogen-source-indexer)
-[![License](https://img.shields.io/packagist/l/ceus-media/hydrogen-source-indexer.svg?style=flat-square)](https://packagist.org/packages/ceus-media/hydrogen-source-indexer)
-[![Release date](https://img.shields.io/github/release-date/CeusMedia/HydrogenSourceIndexer.svg?style=flat-square)](https://github.com/CeusMedia/HydrogenSourceIndexer)
-[![Commit date](https://img.shields.io/github/last-commit/CeusMedia/HydrogenSourceIndexer.svg?style=flat-square)](https://github.com/CeusMedia/HydrogenSourceIndexer)
+In short: A tool to create an JSON index file for a collection of modules, usable with the Hydrogen framework.
 
 ## Introduction
 

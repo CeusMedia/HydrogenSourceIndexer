@@ -16,13 +16,13 @@ use function json_encode;
 class JsonRenderer
 {
 	/**	@var	array		$modules */
-	protected $modules	= [];
+	protected array $modules			= [];
 
-	/**	@var	IniReader	$settings */
-	protected $settings;
+	/**	@var	?IniReader	$settings */
+	protected ?IniReader $settings		= NULL;
 
 	/**	@var	boolean		$printPretty */
-	protected $printPretty	= FALSE;
+	protected bool $printPretty			= FALSE;
 
 	/**
 	 *	@access		public
