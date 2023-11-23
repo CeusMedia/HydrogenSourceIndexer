@@ -40,7 +40,7 @@ class App
 	 */
 	public function __construct( string $pathSource )
 	{
-		if( !CLI::checkIsCLi( FALSE ) )
+		if( !CLI::checkIsCli( FALSE ) )
 			die( 'This application is for CLI use, only.' );
 
 		$this->pathSource		= $pathSource;

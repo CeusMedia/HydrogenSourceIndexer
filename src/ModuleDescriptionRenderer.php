@@ -89,7 +89,7 @@ class ModuleDescriptionRenderer
 	 */
 	protected static function formatCodeBlocks( string $content ): string
 	{
-		$content	= preg_replace( '/<(\/?)code>/', "_____\\1code_____", $content );				//  preserve <code> tags
+		$content	= preg_replace( '/<(\/?)code>/', "_____\\1code_____", $content ) ?? '';			//  preserve <code> tags
 		$pattern	= "/(\r?\n)*code:?(\w+)?>(.*)<code(\r?\n)*/siU";
 		$matches	= array();
 		preg_match_all( $pattern, $content, $matches );
@@ -100,8 +100,7 @@ class ModuleDescriptionRenderer
 			$new		= HtmlTag::create( 'xmp', $code, $attributes );
 			$content	= str_replace( $matches[0][$i], $new, $content );
 		}
-		$content	= preg_replace( '/_____(\/?)code_____/', '<\\1code>', $content );				//  recreate <code> tags
-		return $content;
+		return preg_replace( '/_____(\/?)code_____/', '<\\1code>', $content ) ?? '';					//  recreate <code> tags
 	}
 
 	/**
@@ -116,7 +115,7 @@ class ModuleDescriptionRenderer
 		for( $i=0; $i<count( $matches[0] ); $i++ ){
 			$url		= $matches[1][$i];
 			$title		= str_replace( ' ', '&nbsp;', trim( $matches[3][$i] ) );
-			$class		= ( self::$linkClass ? self::$linkClass.' ' : '' ).'link-external';
+			$class		= ( '' !== self::$linkClass ? self::$linkClass.' ' : '' ).'link-external';
 			$link		= HtmlElements::Link( $url, $title, $class, self::$linkTarget );
 			$content	= str_replace( $matches[0][$i], $link, $content );
 		}
@@ -154,7 +153,7 @@ class ModuleDescriptionRenderer
 			$query		= trim( $matches[1][$i] );
 			$title		= isset( $matches[3][$i] ) ? trim( $matches[3][$i] ) : $query;
 			$url		= 'https://de.wikipedia.org/wiki/'.$query;
-			$class		= ( self::$linkClass ? self::$linkClass.' ' : '' ).'link-wiki';
+			$class		= ( '' !== self::$linkClass ? self::$linkClass.' ' : '' ).'link-wiki';
 			$link		= HtmlElements::Link( $url, $title, $class, self::$linkTarget );
 			$content	= str_replace( $matches[0][$i], $link, $content );
 		}
@@ -174,7 +173,7 @@ class ModuleDescriptionRenderer
 			$query		= trim( $matches[1][$i] );
 			$title		= isset( $matches[3][$i] ) ? trim( $matches[3][$i] ) : $query;
 			$url		= 'https://www.youtube.com/watch?v='.$query;
-			$class		= ( self::$linkClass ? self::$linkClass.' ' : '' ).'link-youtube';
+			$class		= ( '' !== self::$linkClass ? self::$linkClass.' ' : '' ).'link-youtube';
 			$link		= HtmlElements::Link( $url, $title, $class, self::$linkTarget );
 			$content	= str_replace( $matches[0][$i], $link, $content );
 		}
@@ -217,7 +216,7 @@ class ModuleDescriptionRenderer
 			$class		= $matches[3][$i];
 			$lines		= explode( "\n", trim( $matches[4][$i] ) );
 			foreach( $lines as $nr => $line )
-				$lines[$nr]	= preg_replace( '/^- /', '<li>', trim( $lines[$nr] ) ).'</li>';
+				$lines[$nr]	= preg_replace( '/^- /', '<li>', trim( $line ) ).'</li>';
 			$lines		= implode( "\n", $lines );
 			$attributes	= ['class' => $class ? $class : 'list'];
 			$new		= HtmlTag::create( $type.'l', $lines, $attributes );
