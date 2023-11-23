@@ -2,13 +2,12 @@
 <?php
 use CeusMedia\HydrogenSourceIndexer\App;
 
-use UI_DevOutput as DevOutput;
-use Net_CURL as cURL;
+use CeusMedia\Common\UI\DevOutput as DevOutput;
 
 ( include_once __DIR__.'/../../autoload.php' ) or die( 'Install packages using composer, first!' );
 
 error_reporting( E_ALL );
-ini_set( 'display_errors', TRUE );
+ini_set( 'display_errors', '1' );
 
 require_once __DIR__.'/src/CustomFileTrait.php';
 require_once __DIR__.'/src/ComposerSupport.php';

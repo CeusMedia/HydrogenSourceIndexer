@@ -21,6 +21,9 @@ class ModuleDescriptionRenderer
 	/**	@var	string		$linkTarget		... */
 	public static string $linkTarget		= '_self';
 
+	/**	@var	array		$callbacks		... */
+	protected static array $callbacks		= [];
+
 	/**	@var	string		$content		... */
 	protected string $content				= '';
 
@@ -218,7 +221,7 @@ class ModuleDescriptionRenderer
 			$lines		= explode( "\n", trim( $matches[4][$i] ) );
 			foreach( $lines as $nr => $line )
 				$lines[$nr]	= preg_replace( '/^- /', '<li>', trim( $line ) ).'</li>';
-			$lines	= implode( "\n", $lines );
+			$lines		= implode( "\n", $lines );
 			$attributes	= ['class' => $class ? $class : 'list'];
 			$new		= HtmlTag::create( $type.'l', $lines, $attributes );
 			$content	= str_replace( $matches[0][$i], $new, $content );

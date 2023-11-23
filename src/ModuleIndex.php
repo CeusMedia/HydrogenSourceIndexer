@@ -11,6 +11,7 @@ use CeusMedia\Common\FS\File\RecursiveNameFilter as RecursiveFileNameIndex;
 
 use Exception;
 use RangeException;
+use SplFileObject;
 
 /**
  *	@author		Christian Würker <christian.wuerker@ceusmedia.de>
@@ -18,11 +19,11 @@ use RangeException;
  */
 class ModuleIndex
 {
-	const MODE_FULL		= 0;
-	const MODE_MINIMAL	= 1;
-	const MODE_REDUCED	= 2;
+	public const MODE_FULL		= 0;
+	public const MODE_MINIMAL	= 1;
+	public const MODE_REDUCED	= 2;
 
-	const MODES			= [
+	public const MODES			= [
 		self::MODE_FULL,
 		self::MODE_MINIMAL,
 		self::MODE_REDUCED,
@@ -52,10 +53,10 @@ class ModuleIndex
 	public function index( ?int $mode = NULL ): array
 	{
 		$mode	= $mode ?? $this->mode;
-		$list	= array();
+		$list	= [];
 		$index	= new RecursiveFileNameIndex( $this->pathSource, 'module.xml' );
 		$regExp	= '@^'.preg_quote( $this->pathSource, '@' ).'@';
-		/** @var \SplFileInfo $entry */
+		/** @var SplFileObject $entry */
 		foreach( $index as $entry ){
 			/** @var string $modulePath */
 			$modulePath = preg_replace( $regExp, '', $entry->getPath() );
@@ -73,11 +74,11 @@ class ModuleIndex
 				unset( $module->uri );
 				switch( $mode ){
 					case self::MODE_MINIMAL:
-						$module	= (object) array(
+						$module	= (object) [
 							'title'			=> $module->title,
 							'description'	=> $module->description,
 							'version'		=> $module->version,
-						);
+						];
 						break;
 					case self::MODE_REDUCED:
 						unset( $module->config );
