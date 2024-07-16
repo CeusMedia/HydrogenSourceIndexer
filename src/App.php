@@ -7,6 +7,7 @@
 namespace CeusMedia\HydrogenSourceIndexer;
 
 use CeusMedia\Common\CLI;
+use CeusMedia\Common\Env;
 use CeusMedia\Common\CLI\ArgumentParser as CliArgumentParser;
 use CeusMedia\Common\FS\File\Writer as FileWriter;
 
@@ -40,7 +41,7 @@ class App
 	 */
 	public function __construct(string $pathSource )
 	{
-		if( !CLI::checkIsCli( FALSE ) )
+		if( !Env::isCli() )
 			die( 'This application is for CLI use, only.' );
 
 		$this->pathSource		= $pathSource;
