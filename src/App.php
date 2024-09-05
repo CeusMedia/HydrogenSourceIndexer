@@ -39,7 +39,7 @@ class App
 	 *	@access		public
 	 *	@return		never-return
 	 */
-	public function __construct(string $pathSource )
+	public function __construct( string $pathSource )
 	{
 		if( !Env::isCli() )
 			die( 'This application is for CLI use, only.' );
@@ -47,7 +47,7 @@ class App
 		$this->pathSource		= $pathSource;
 		$this->composerSupport	= new ComposerSupport();
 		$this->checkComposerPackages();
-		$this->moduleIndex		= new ModuleIndex( $pathSource.'src/' );
+		$this->moduleIndex		= new ModuleIndex( $pathSource );
 		$this->moduleIndex->setMode( ModuleIndex::MODE_FULL );
 		$this->settings			= new IniReader( $pathSource );
 		$p	= new CliArgumentParser();

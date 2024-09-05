@@ -11,6 +11,7 @@ use CeusMedia\Common\UI\HTML\Elements as HtmlElements;
 use CeusMedia\Common\UI\HTML\PageFrame as HtmlPage;
 use CeusMedia\Common\UI\HTML\Tag as HtmlTag;
 
+use CeusMedia\HydrogenFramework\Environment\Resource\Module\Definition as ModuleDefinition;
 use DomainException;
 use RuntimeException;
 
@@ -68,7 +69,7 @@ class HtmlRenderer
 		 * @var string $content
 		 */
 		foreach( $data as $placeholder => $content )
-			$template	= str_replace( '{{ '.$placeholder.' }}', $content, $template );
+			$template	= str_replace( '{{ '.$placeholder.' }}', $content ?? '', $template );
 		return $template;
 	}
 
@@ -102,8 +103,12 @@ class HtmlRenderer
 	{
 		$descriptionRenderer	= new ModuleDescriptionRenderer();
 		$list	= [];
+		/**
+		 * @var string $moduleId
+		 * @var ModuleDefinition $module
+		 */
 		foreach( $this->modules as $moduleId => $module ){
-			$descriptionRenderer->setContent( (string) $module->description );
+			$descriptionRenderer->setContent( $module->description );
 			$description	= $descriptionRenderer->render();
 			$id				= preg_replace( '@[^a-z0-9]@i', '-', $moduleId );
 			$list[]	= HtmlTag::create( 'div', [
@@ -111,7 +116,7 @@ class HtmlRenderer
 					HtmlTag::create( 'a', [
 						HtmlTag::create( 'span', $module->title, ['class' => 'module-title'] ),
 						'&nbsp;',
-						HtmlTag::create( 'small', 'v'.$module->version, ['class' => 'module-version muted'] ),
+						HtmlTag::create( 'small', 'v'.$module->version->available, ['class' => 'module-version muted'] ),
 					], [
 						'class'		=> 'accordion-toggle',
 						'href'		=> '#collapse-'.$id,
