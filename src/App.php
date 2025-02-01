@@ -77,6 +77,7 @@ class App
 				$renderer->setSourcePath( $this->pathSource );
 				$renderer->setSettings( $this->settings );
 				$renderer->setModules( $this->moduleIndex->index() );
+				$renderer->setMode( ModuleIndex::MODE_FULL );
 				FileWriter::save( $this->pathSource.'index.html', $renderer->render() );
 				echo 'Created index.html.'.PHP_EOL;
 				break;
