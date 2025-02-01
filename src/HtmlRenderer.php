@@ -34,6 +34,7 @@ class HtmlRenderer
 	protected ModuleDescriptionRenderer $descriptionRenderer;
 	protected ModuleFilesRenderer $filesRenderer;
 	protected ModuleConfigRenderer $configRenderer;
+	protected ModuleLogRenderer $logRenderer;
 
 	protected int $mode		= ModuleIndex::MODE_REDUCED;
 
@@ -42,6 +43,7 @@ class HtmlRenderer
 		$this->descriptionRenderer	= new ModuleDescriptionRenderer();
 		$this->filesRenderer		= new ModuleFilesRenderer();
 		$this->configRenderer		= new ModuleConfigRenderer();
+		$this->logRenderer			= new ModuleLogRenderer();
 	}
 
 	/**
@@ -138,17 +140,20 @@ class HtmlRenderer
 		$description	= $this->descriptionRenderer->setContent( $module->description )->render();
 		$files			= '';
 		$config			= '';
+		$log			= '';
 		if( ModuleIndex::MODE_FULL === $this->mode ){
 			$files		= $this->filesRenderer->setModule( $module )->render();
 			$config		= $this->configRenderer->setModule( $module )->render();
+			$log		= $this->logRenderer->setModule( $module )->render();
 		}
-		$id				= preg_replace( '@[^a-z0-9]@i', '-', $moduleId );
+
+		$id	= preg_replace( '@[^a-z0-9]@i', '-', $moduleId );
 		return HtmlTag::create( 'div', [
 			HtmlTag::create( 'div', [
 				HtmlTag::create( 'a', [
 					HtmlTag::create( 'span', $module->title, ['class' => 'module-title'] ),
 					'&nbsp;',
-					HtmlTag::create( 'small', 'v'.$module->version->available, ['class' => 'module-version muted'] ),
+					HtmlTag::create( 'small', 'v'.$module->version->current, ['class' => 'module-version muted'] ),
 				], [
 					'class'		=> 'accordion-toggle',
 					'href'		=> '#collapse-'.$id,
@@ -159,7 +164,7 @@ class HtmlRenderer
 			], ['class' => 'accordion-heading'] ),
 			HtmlTag::create( 'div', [
 				HtmlTag::create( 'div', [
-					HtmlTag::create( 'div', $description.$files.$config ),
+					HtmlTag::create( 'div', $description.$files.$config.$log ),
 				], ['class' => 'accordion-inner'] ),
 			], [
 				'class'		=> 'accordion-body collapse',
