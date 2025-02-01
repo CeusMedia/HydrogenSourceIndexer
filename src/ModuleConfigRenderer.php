@@ -25,10 +25,13 @@ class ModuleConfigRenderer
 				$additional	.= 'protected ';
 			else if( is_string( $config->protected ) )
 				$additional	.= 'protected:'.$config->protected.' ';
+			$value	 = $config->value;
+			if( is_bool( $value ) )
+				$value	= $value ? 'true' : 'false';
 			$rows[]	= Tag::create( 'tr', [
 				Tag::create( 'td', $label ),
 				Tag::create( 'td', $config->type ),
-				Tag::create( 'td', $config->value ),
+				Tag::create( 'td', $value ),
 				Tag::create( 'td', $additional, ['class' => 'muted', 'style' => 'font-size: 85%'] ),
 			] );
 		}
