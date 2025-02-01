@@ -22,9 +22,9 @@ class ModuleLogRenderer
 			] );
 		}
 		$colgroup	= Elements::ColumnGroup( '70px', '' );
-		$thead		= Tag::create( 'thead', $list );
+		$tbody		= Tag::create( 'tbody', $list, ['style' => 'max-height: 200px; overflow-y: auto'] );
 		$heading	= Tag::create( 'h3', 'Version Log' );
-		$table		= Tag::create( 'table', $colgroup.$thead, ['class' => 'table table-striped table-bordered table-condensed'] );
+		$table		= Tag::create( 'table', $colgroup.$tbody, ['class' => 'table table-striped table-bordered table-condensed'] );
 		return Tag::create( 'div', $heading.$table );
 	}
 
