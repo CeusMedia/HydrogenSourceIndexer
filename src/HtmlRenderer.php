@@ -6,11 +6,14 @@
  */
 namespace CeusMedia\HydrogenSourceIndexer;
 
+use CeusMedia\Common\FS\File\Reader;
 use CeusMedia\Common\FS\File\Reader as FileReader;
 use CeusMedia\Common\UI\HTML\Elements as HtmlElements;
 use CeusMedia\Common\UI\HTML\PageFrame as HtmlPage;
+use CeusMedia\Common\UI\HTML\Tag;
 use CeusMedia\Common\UI\HTML\Tag as HtmlTag;
 
+use CeusMedia\HydrogenFramework\Environment\Resource\Module\Definition as ModuleDefinition;
 use DomainException;
 use RuntimeException;
 
@@ -22,11 +25,26 @@ class HtmlRenderer
 {
 	use CustomFileTrait;
 
-	/** @var array $modules */
+	/** @var array<string,ModuleDefinition> $modules */
 	protected array $modules		= [];
 
 	/** @var ?IniReader $settings */
 	protected ?IniReader $settings	= NULL;
+
+	protected ModuleDescriptionRenderer $descriptionRenderer;
+	protected ModuleFilesRenderer $filesRenderer;
+	protected ModuleConfigRenderer $configRenderer;
+	protected ModuleLogRenderer $logRenderer;
+
+	protected int $mode		= ModuleIndex::MODE_REDUCED;
+
+	public function __construct()
+	{
+		$this->descriptionRenderer	= new ModuleDescriptionRenderer();
+		$this->filesRenderer		= new ModuleFilesRenderer();
+		$this->configRenderer		= new ModuleConfigRenderer();
+		$this->logRenderer			= new ModuleLogRenderer();
+	}
 
 	/**
 	 *	@access		public
@@ -38,6 +56,7 @@ class HtmlRenderer
 			throw new RuntimeException( 'No settings set' );
 
 		try{
+			/** @var string $template */
 			$template	= FileReader::load( $this->getCustomFile( '.index.html' ) );
 		}
 		catch( DomainException $e ){
@@ -50,7 +69,7 @@ class HtmlRenderer
 			$template	= $page->build();
 		}
 
-		if( count( $this->modules ) === 0 )
+		if( [] === $this->modules )
 			throw new RuntimeException( 'No modules given or available' );
 		$modules	= $this->renderModules();
 
@@ -62,6 +81,7 @@ class HtmlRenderer
 			'description'	=> $this->settings->get( 'description' ),
 			'date'			=> $this->settings->get( 'id' ),
 			'modules'		=> $modules,
+			'styles'		=> Tag::create( 'style', Reader::load( __DIR__.'/style.css' ) ),
 		];
 		/**
 		 * @var string $placeholder
@@ -72,12 +92,18 @@ class HtmlRenderer
 		return $template;
 	}
 
+	public function setMode( int $mode ): static
+	{
+		$this->mode	= $mode;
+		return $this;
+	}
+
 	/**
 	 *	@access		public
 	 *	@param		array		$modules		...
-	 *	@return		self
+	 *	@return		static
 	 */
-	public function setModules( array $modules ): self
+	public function setModules( array $modules ): static
 	{
 		$this->modules	= $modules;
 		return $this;
@@ -100,39 +126,51 @@ class HtmlRenderer
 	 */
 	protected function renderModules(): string
 	{
-		$descriptionRenderer	= new ModuleDescriptionRenderer();
 		$list	= [];
 		foreach( $this->modules as $moduleId => $module ){
-			$descriptionRenderer->setContent( (string) $module->description );
-			$description	= $descriptionRenderer->render();
-			$id				= preg_replace( '@[^a-z0-9]@i', '-', $moduleId );
-			$list[]	= HtmlTag::create( 'div', [
-				HtmlTag::create( 'div', [
-					HtmlTag::create( 'a', [
-						HtmlTag::create( 'span', $module->title, ['class' => 'module-title'] ),
-						'&nbsp;',
-						HtmlTag::create( 'small', 'v'.$module->version, ['class' => 'module-version muted'] ),
-					], [
-						'class'		=> 'accordion-toggle',
-						'href'		=> '#collapse-'.$id,
-					], [
-						'toggle'	=> 'collapse',
-						'parent'	=> '#accordion-modules',
-					] ),
-				], ['class' => 'accordion-heading'] ),
-				HtmlTag::create( 'div', [
-					HtmlTag::create( 'div', [
-						HtmlTag::create( 'div', $description ),
-					], ['class' => 'accordion-inner'] ),
-				], [
-					'class'		=> 'accordion-body collapse',
-					'id'		=> 'collapse-'.$id,
-				] ),
-			], ['class' => 'accordion-group'] );
+			$list[]	= $this->renderModule( $module, $moduleId );
 		}
 		return HtmlTag::create( 'div', $list, [
 			'class'	=> 'accordion',
 			'id'	=> 'accordion-modules',
 		] );
+	}
+
+	protected function renderModule( ModuleDefinition $module, string $moduleId ): string
+	{
+		$description	= $this->descriptionRenderer->setContent( $module->description )->render();
+		$files			= '';
+		$config			= '';
+		$log			= '';
+		if( ModuleIndex::MODE_FULL === $this->mode ){
+			$files		= $this->filesRenderer->setModule( $module )->render();
+			$config		= $this->configRenderer->setModule( $module )->render();
+			$log		= $this->logRenderer->setModule( $module )->render();
+		}
+
+		$id	= preg_replace( '@[^a-z0-9]@i', '-', $moduleId );
+		return HtmlTag::create( 'div', [
+			HtmlTag::create( 'div', [
+				HtmlTag::create( 'a', [
+					HtmlTag::create( 'span', $module->title, ['class' => 'module-title'] ),
+					'&nbsp;',
+					HtmlTag::create( 'small', 'v'.$module->version->current, ['class' => 'module-version muted'] ),
+				], [
+					'class'		=> 'accordion-toggle',
+					'href'		=> '#collapse-'.$id,
+				], [
+					'toggle'	=> 'collapse',
+					'parent'	=> '#accordion-modules',
+				] ),
+			], ['class' => 'accordion-heading'] ),
+			HtmlTag::create( 'div', [
+				HtmlTag::create( 'div', [
+					HtmlTag::create( 'div', $description.$files.$config.$log ),
+				], ['class' => 'accordion-inner'] ),
+			], [
+				'class'		=> 'accordion-body collapse',
+				'id'		=> 'collapse-'.$id,
+			] ),
+		], ['class' => 'accordion-group'] );
 	}
 }

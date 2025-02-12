@@ -7,6 +7,7 @@
 namespace CeusMedia\HydrogenSourceIndexer;
 
 use CeusMedia\Common\CLI;
+use CeusMedia\Common\Env;
 use CeusMedia\Common\CLI\ArgumentParser as CliArgumentParser;
 use CeusMedia\Common\FS\File\Writer as FileWriter;
 
@@ -38,15 +39,15 @@ class App
 	 *	@access		public
 	 *	@return		never-return
 	 */
-	public function __construct(string $pathSource )
+	public function __construct( string $pathSource )
 	{
-		if( !CLI::checkIsCli( FALSE ) )
+		if( !Env::isCli() )
 			die( 'This application is for CLI use, only.' );
 
 		$this->pathSource		= $pathSource;
 		$this->composerSupport	= new ComposerSupport();
 		$this->checkComposerPackages();
-		$this->moduleIndex		= new ModuleIndex( $pathSource.'src/' );
+		$this->moduleIndex		= new ModuleIndex( $pathSource );
 		$this->moduleIndex->setMode( ModuleIndex::MODE_FULL );
 		$this->settings			= new IniReader( $pathSource );
 		$p	= new CliArgumentParser();
@@ -54,12 +55,13 @@ class App
 		/** @var array $commands */
 		$commands	= $p->get( 'commands' );
 		$command	= current( $commands );
+		$pathTarget	= preg_replace( "@src/?$@", '', $this->pathSource );
 		switch( $command ){
 			case 'serial':
 				$renderer	= new SerialRenderer();
 				$renderer->setSettings( $this->settings );
 				$renderer->setModules( $this->moduleIndex->index() );
-				FileWriter::save( $this->pathSource.'index.serial', $renderer->render() );
+				FileWriter::save( $pathTarget.'index.serial', $renderer->render() );
 				echo 'Created index.serial.'.PHP_EOL;
 				break;
 			case 'json':
@@ -68,7 +70,7 @@ class App
 				$renderer->setSettings( $this->settings );
 				$renderer->setModules( $this->moduleIndex->index() );
 				$renderer->setPrettyPrint( $command === 'json-dev' );
-				FileWriter::save( $this->pathSource.'index.json', $renderer->render() );
+				FileWriter::save( $pathTarget.'index.json', $renderer->render() );
 				echo 'Created index.json.'.PHP_EOL;
 				break;
 			case 'html':
@@ -76,7 +78,8 @@ class App
 				$renderer->setSourcePath( $this->pathSource );
 				$renderer->setSettings( $this->settings );
 				$renderer->setModules( $this->moduleIndex->index() );
-				FileWriter::save( $this->pathSource.'index.html', $renderer->render() );
+				$renderer->setMode( ModuleIndex::MODE_FULL );
+				FileWriter::save( $pathTarget.'index.html', $renderer->render() );
 				echo 'Created index.html.'.PHP_EOL;
 				break;
 			default:

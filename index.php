@@ -19,6 +19,10 @@ require_once __DIR__.'/src/IniReader.php';
 require_once __DIR__.'/src/ModuleDescriptionRenderer.php';
 require_once __DIR__.'/src/App.php';
 
-$pathSource	= dirname( __DIR__, 3 ) .'/';
+$packagePath	= dirname( __DIR__, 3 ).'/';
+$pathSource		= '';
+if( file_exists( $packagePath.'src' ) ){
+	$pathSource		= 'src/';
+}
 
-new App( $pathSource );
+new App( $packagePath.$pathSource );
