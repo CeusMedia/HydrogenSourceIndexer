@@ -95,9 +95,9 @@ class ModuleDescriptionRenderer
 		$matches	= array();
 		preg_match_all( $pattern, $content, $matches );
 		for( $i=0; $i<count( $matches[0] ); $i++ ){
-			$type		= $matches[2][$i];
+			$type		= $matches[2][$i] ?? 'code';
 			$code		= trim( $matches[3][$i] );
-			$attributes	= ['class' => $type ? $type : 'code'];
+			$attributes	= ['class' => $type];
 			$new		= HtmlTag::create( 'xmp', $code, $attributes );
 			$content	= str_replace( $matches[0][$i], $new, $content );
 		}
@@ -217,12 +217,12 @@ class ModuleDescriptionRenderer
 		preg_match_all( $pattern, $content, $matches );
 		for( $i=0; $i<count( $matches[0] ); $i++ ){
 			$type		= $matches[2][$i] ?? 'u';
-			$class		= $matches[3][$i];
+			$class		= $matches[3][$i] ?? 'list';
 			$lines		= explode( "\n", trim( $matches[4][$i] ) );
 			foreach( $lines as $nr => $line )
 				$lines[$nr]	= preg_replace( '/^- /', '<li>', trim( $line ) ).'</li>';
 			$lines		= implode( "\n", $lines );
-			$attributes	= ['class' => $class ? $class : 'list'];
+			$attributes	= ['class' => $class];
 			$new		= HtmlTag::create( $type.'l', $lines, $attributes );
 			$content	= str_replace( $matches[0][$i], $new, $content );
 		}

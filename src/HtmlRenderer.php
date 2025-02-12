@@ -56,6 +56,7 @@ class HtmlRenderer
 			throw new RuntimeException( 'No settings set' );
 
 		try{
+			/** @var string $template */
 			$template	= FileReader::load( $this->getCustomFile( '.index.html' ) );
 		}
 		catch( DomainException $e ){
@@ -87,7 +88,7 @@ class HtmlRenderer
 		 * @var string $content
 		 */
 		foreach( $data as $placeholder => $content )
-			$template	= str_replace( '{{ '.$placeholder.' }}', $content ?? '', $template );
+			$template	= str_replace( '{{ '.$placeholder.' }}', $content, $template );
 		return $template;
 	}
 
